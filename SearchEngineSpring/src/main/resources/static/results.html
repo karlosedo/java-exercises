@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+</head>
+<body>
+    <main>
+        <div style="text-align: center;">
+            <img src="img/altavista.png" />
+        </div>
+        <div style="text-align: center;">
+            <p>
+                <input type="text" id="searchInput" />
+                <button onclick="search();">Search</button>
+                <button>I'm lucky!</button>
+            </p>
+        </div>
+        <hr>
+        <div id=""results">
+            <span>Page 1 of 460.000</span>
+            <div id="links"></div>
+            <!--<div style="background-color: rgb(194, 245, 238);">
+                <h3 style="color: blue;">Este es el primer resultado</h3>
+                <p>Este es el texto correspondiente al primer resultado del motor de búsqueda</p>
+            </div>
+            <div style="background-color: rgb(194, 245, 238);">
+                <h3 style="color: blue;">Este es el segundo resultado</h3>
+                <p>Este es el texto correspondiente al segundo resultado del motor de búsqueda</p>
+            </div>-->
+        </div>
+    </main>
+    <script>
+        let aux = document.location.href.split('?text=');
+        let query = aux[1];
+        console.log(query);
+        document.getElementById("searchInput").value = query;
+        fetch('http://localhost:8084/api/search?text='+query)
+            .then(response => response.json())
+            .then(json=> {  // El json es un array de jsons
+            	console.log(json);
+            	let html='';
+            	for (i=0; i<json.length;i++) { // También se puede usar: for (let resultSearch for json)
+            		console.log('Json #'+i);
+            		console.log(json[i]);
+            		html+=getSearchResult(json[i]);
+            	}
+            	document.getElementById('links').outerHTML = html;
+          	});
+        
+        function getSearchResult(resul) { 
+            return `<div style="background-color: rgb(194, 245, 238);">
+                <h3 style="color: blue;"><a href="${resul.url}" target="_blank">${resul.title}</a></h3>
+                <p>${resul.description}</p>
+            </div>`;   //La comilla inclinada permite varios saltos de línea
+        }
+
+        function search() {
+            let inputSearch = document.getElementById('searchInput').value;
+            document.location.href = 'results.html?text='+inputSearch;
+        }
+    </script>
+</body>
+</html>

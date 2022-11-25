@@ -4,11 +4,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 public class LocalDates {
 	
-	public static void main(String [] args) {
+	public static void main(String[] args) {
+		//Prueba pequeña de parámetros
+		Arrays.stream(args).forEach(a -> System.out.println(a));
 		
 		// Cuando se usaba Calendar
 		Calendar calendar = Calendar.getInstance();

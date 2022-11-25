@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+</head>
+<body>
+    <main>
+        <div style="text-align: center;">
+            <img src="img/altavista.png" />
+        </div>
+        <div style="text-align: center;">
+            <p>
+                <input type="text" id="searchInput" />
+                <button>Search</button>
+                <button>I'm lucky!</button>
+            </p>
+        </div>
+        <hr>
+        <div id=""results">
+            <span>Page 1 of 460.000</span>
+            <div style="background-color: rgb(194, 245, 238);">
+                <h3 style="color: blue;">Este es el primer resultado</h3>
+                <p>Este es el texto correspondiente al primer resultado del motor de búsqueda</p>
+            </div>
+            <div style="background-color: rgb(194, 245, 238);">
+                <h3 style="color: blue;">Este es el segundo resultado</h3>
+                <p>Este es el texto correspondiente al segundo resultado del motor de búsqueda</p>
+            </div>
+        </div>
+    </main>
+    <script>
+        let aux = document.location.href.split('?query=');
+        let query = aux[1];
+        console.log(query);
+        document.getElementById("searchInput").value = query;
+        fetch('http://localhost:8084/api/search?query='+query)
+            .then(response => response.json())
+            .then(json=> { console.log(json)});
+        
+        function getSearchRestul() { 
+            return `<div style="background-color: rgb(194, 245, 238);">
+                <h3 style="color: blue;">${title}</h3>
+                <p>${description}</p>
+            </div>`;   <!-- La comilla inclinada permite varios saltos de línea-->
+        }
+    </script>
+</body>
+</html>
