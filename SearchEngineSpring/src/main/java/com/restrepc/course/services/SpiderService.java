@@ -25,16 +25,19 @@ public class SpiderService {
 	@Autowired
 	private SearchService searchService;
 	
-	public String indexWebPage() {
-		String url = "https://www.escuelaing.edu.co/es/";
-		String content = getWebContent(url);
-		if (content.isBlank()) return "";
-		indexAndSaveWebPage(url, content);
+	public void indexWebPage() {
+		List<WebPage> linksToIndex =searchService.getLinksToIndex();
+//		String url = "https://www.portafolio.co";
+		linksToIndex.forEach(webPage -> {
+			try {
+				String content = getWebContent(webPage.getUrl());
+				indexSimplePage(webPage, content);
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		});
 		
-		String[] auxDomain = url.split("/");
-		String domain = auxDomain[0]+"//"+auxDomain[2];
-		saveLinks(domain, content);
-		return null;
+//		return null;
 		/*<title>
       
         Inicio
@@ -49,6 +52,17 @@ public class SpiderService {
 		 * content="Escuela Colombiana de Ingeniería Julio Garavito - Carreras profesionales, pregrados y posgrado, 
 		 * maestrías, especializaciones, diplomados, cursos de expertos.">*/
 	}
+
+	private void indexSimplePage(WebPage webPage, String content) throws Exception {
+//		System.out.println(content);
+		if (content.isBlank()) return;
+		
+		indexAndSaveWebPage(webPage.getUrl(), content);
+		
+		String[] auxDomain = webPage.getUrl().split("/");
+		String domain = auxDomain[0]+"//"+auxDomain[2];
+		saveLinks(domain, content);
+	}
 	
 	private void saveLinks(String domain, String content) {
 		List<String> links = getLinks(domain, content);
@@ -57,8 +71,14 @@ public class SpiderService {
 		 * En este caso, a cada link lo convierto en un nuevo objeto WebPage, por lo que 
 		 * ahora manejamos un List<WebPage>
 		*/
-		links.stream().filter(link -> !searchService.exist(link))
-				.map(link -> new WebPage(link))
+		links.stream().filter(link -> !searchService.exist(link)).parallel()
+				.map(link -> {
+					WebPage web = new WebPage(link);
+//					String content2 = getWebContent(link);
+//					web.setDescription(getDescription(content2));
+//					web.setTitle(getTitle(content2));
+					return web;
+					})
 				.forEach(webPage -> searchService.save(webPage));   
 	}
 	
@@ -69,12 +89,13 @@ public class SpiderService {
 		
 		String[] splitHref = content.split("href=\"");
 		List<String> splitHrefList = Arrays.asList(splitHref);
-		splitHrefList.remove(0); //Borro todo lo que había antes del primer href
+//		splitHrefList.remove(0); 
 		
 		splitHrefList.forEach(strLink -> {
 			String[] aux = strLink.split("\"");
 			links.add(aux[0]);
 		});
+//		System.out.println("links "+links.size());
 		return cleanLinks(domain, links);
 	}
 
@@ -86,6 +107,7 @@ public class SpiderService {
 		List<String> cleanedLinks = links.stream().filter(link -> 
 				!Arrays.stream(excludedExtensions).anyMatch(extension -> link.endsWith(extension)))
 			.map(link -> link.startsWith("/")? domain+link:link)
+			.filter(link -> !link.startsWith("#"))
 		.collect(Collectors.toList());
 		
 		// Con hashset se eliminan los elementos repetidos
@@ -93,7 +115,7 @@ public class SpiderService {
 		setLinks.addAll(cleanedLinks);
 		
 		
-		return null;
+		return new ArrayList(setLinks);
 	}
 	private String indexAndSaveWebPage(String url, String content) {
 		String title = getTitle(content);

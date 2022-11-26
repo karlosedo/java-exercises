@@ -40,4 +40,13 @@ public class SearchRepositoryImpl implements SearchRepository {
 		return list.size()==0?false: true;
 	}
 
+	@Override
+	public List<WebPage> getLinksToIndex() {
+		String query = "FROM WebPage where title is null and description is null";  //En hibernate no hace falta colocar el select si se consultan todos los datos
+		List<WebPage> listPages = em.createQuery(query).
+				getResultList();
+		System.out.println("listPages "+listPages.size());
+		return listPages;
+	}
+
 }

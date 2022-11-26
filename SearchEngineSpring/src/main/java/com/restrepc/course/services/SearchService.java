@@ -33,4 +33,8 @@ public class SearchService {
 		return repository.exist(link);
 	}
 	
+	List<WebPage> getLinksToIndex() {
+		return repository.getLinksToIndex();
+	}
+	
 }

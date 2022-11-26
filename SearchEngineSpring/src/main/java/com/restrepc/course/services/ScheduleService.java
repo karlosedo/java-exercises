@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class ScheduleService {
 	
-	@Scheduled(fixedRate = 3000)
+	@Scheduled(fixedRate = 6000)
 	public void scheduleTest() {
 		LocalTime t = LocalTime.now();
 		System.out.println("Imprime scheduleTest "+t);

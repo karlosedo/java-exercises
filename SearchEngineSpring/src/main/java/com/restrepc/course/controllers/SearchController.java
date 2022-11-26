@@ -32,7 +32,8 @@ public class SearchController {
 	
 	@RequestMapping(value = "api/searchtest", method = RequestMethod.GET) //Cuando se llame a api/search
 	public String searchTest() { //Se va a usar un mapeo de parámetros, cuya llave es el nombre de la variable
-		return spiderService.indexWebPage();
+		spiderService.indexWebPage();
+		return "OK";
 	}	
 	
 //	@RequestMapping(value = "api/search", method = RequestMethod.GET) //Cuando se llame a api/search
