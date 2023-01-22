@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,4 +46,15 @@ public class SearchController {
 //		resultList.add(page);
 //		return resultList;
 //	}
+	
+	@GetMapping("api/cities")
+	public List<String> getCities() {
+		List<String> cityList = new ArrayList<>();
+		System.out.println("Entra a getCities");
+		cityList.add("Bogotá");
+		cityList.add("Medellín");
+		cityList.add("Cali");
+		cityList.add("Barranquilla");
+		return cityList;
+	}
 }

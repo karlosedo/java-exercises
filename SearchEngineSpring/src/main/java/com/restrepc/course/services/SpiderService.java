@@ -55,7 +55,7 @@ public class SpiderService {
 
 	private void indexSimplePage(WebPage webPage, String content) throws Exception {
 //		System.out.println(content);
-		if (content.isBlank()) return;
+		if (content.isEmpty()) return;
 		
 		indexAndSaveWebPage(webPage.getUrl(), content);
 		

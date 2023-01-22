@@ -8,15 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+//import lombok.EqualsAndHashCode;
+//import lombok.Getter;
+//import lombok.Setter;
+//import lombok.ToString;
 
 @Entity
 @Table(name = "webpage")
-@Getter @Setter //Adiciona getters y setters a los atributos. Toca buscar el plugin para que el eclipse los reconozca
-@ToString @EqualsAndHashCode
+//@Getter @Setter //Adiciona getters y setters a los atributos. Toca buscar el plugin para que el eclipse los reconozca
+//@ToString @EqualsAndHashCode
 public class WebPage {
 	
 
@@ -41,4 +41,38 @@ public class WebPage {
 	
 	@Column(name = "description")
 	private String description;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
 }

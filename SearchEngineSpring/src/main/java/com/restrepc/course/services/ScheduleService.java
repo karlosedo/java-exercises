@@ -5,8 +5,9 @@ import java.time.LocalTime;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 @EnableScheduling
 public class ScheduleService {
 	
